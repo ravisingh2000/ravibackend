@@ -16,6 +16,8 @@ const validrouter=require("./routes/auth")
 //         origin:"http://localhost:4200"
 // }
 app.use(compression());
+app.use("/api",router)
+app.use("/api",validrouter)
 // app.use(cors(corsOption))
 // app.use(express.urlencoded({ extended: false }));
 app.use(express.static('/meanstack'));
@@ -27,11 +29,9 @@ app.get("/api/signout", async (req, res) => {
         })
         
 })
-app.use("/api",router)
-app.use("/api",validrouter)
 
 app.get('*', function(req,res) {
-console.log(__dirname+"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+console.log(__dirname+"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
 res.sendFile(path.join(__dirname+'/meanstack/index.html'));
 });
 app.listen(process.env.PORT||3000, () => {
