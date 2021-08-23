@@ -31,7 +31,7 @@ app.use("/api",router)
 app.use("/api",validrouter)
 
 app.get('*', function(req,res) {
-console.log(__dirname+"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+console.log(__dirname+"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
 res.sendFile(path.join(__dirname+'/meanstack/index.html'));
 });
 app.listen(process.env.PORT||3000, () => {
