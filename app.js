@@ -10,16 +10,15 @@ app.use(cookieParser())
 const students = require("./models/student");
 const router=require("./routes/userApi")
 const validrouter=require("./routes/auth")
-app.use("/api",router)
-app.use("/api",validrouter)
+
 
 // var corsOption={
 //         origin:"http://localhost:4200"
 // }
 app.use(compression());
 // app.use(cors(corsOption))
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(__dirname + '/meanstack'));
+// app.use(express.urlencoded({ extended: false }));
+app.use(express.static('/meanstack'));
 
 app.get("/api/signout", async (req, res) => {
         res.clearCookie("mainproject");
@@ -28,7 +27,8 @@ app.get("/api/signout", async (req, res) => {
         })
         
 })
-
+app.use("/api",router)
+app.use("/api",validrouter)
 
 app.get('*', function(req,res) {
 console.log(__dirname+"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
