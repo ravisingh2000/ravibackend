@@ -21,7 +21,7 @@ app.use("/api",validrouter)
         app.use(compression());
         // app.use(cors(corsOption))
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static('/meanstack'));
+app.use(express.static(__dirname+'/meanstack'));
 
 app.get("/api/signout", async (req, res) => {
         res.clearCookie("mainproject");
