@@ -12,14 +12,14 @@ const router=require("./routes/userApi")
 const validrouter=require("./routes/auth")
 
 
-// var corsOption={
-//         origin:"http://localhost:4200"
-// }
-app.use(compression());
 app.use("/api",router)
 app.use("/api",validrouter)
-// app.use(cors(corsOption))
-// app.use(express.urlencoded({ extended: false }));
+// var corsOption={
+        //         origin:"http://localhost:4200"
+        // }
+        app.use(compression());
+        // app.use(cors(corsOption))
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static('/meanstack'));
 
 app.get("/api/signout", async (req, res) => {
