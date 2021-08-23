@@ -10,8 +10,8 @@ app.use(cookieParser())
 const students = require("./models/student");
 const router=require("./routes/userApi")
 const validrouter=require("./routes/auth")
-app.use(router)
-app.use(validrouter)
+app.use("/api",router)
+app.use("/api",validrouter)
 
 // var corsOption={
 //         origin:"http://localhost:4200"
@@ -21,7 +21,7 @@ app.use(compression());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/meanstack'));
 
-app.get("/signout", async (req, res) => {
+app.get("/api/signout", async (req, res) => {
         res.clearCookie("mainproject");
         res.json({
                 name: false
