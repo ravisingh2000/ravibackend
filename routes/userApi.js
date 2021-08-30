@@ -6,7 +6,7 @@ const students = require("../models/student");
 const templats=require("..//models/template")
 router.get("/getdata", async (req, res) => {
         try {
-                const token = req.cookies.mainproject1;
+                const token = req.cookies.mainproject;
                 const verify = await jwt.verify(token, "ravisingh");
                 const data = await students.findOne({ email: verify.email });
                 res.json({
@@ -24,7 +24,8 @@ router.get("/gettemplatedata", async (req, res) => {
         try {
                 const token = req.cookies.mainproject1;
                 console.log(token)
-                if(k!=undefined){
+                console.log("hhhhhhhhhhhhhhhhhhhhhhhh")
+                if(token!=undefined){
                 //  const verify = await jwt.verify(token, "ravisingh");
                 const data = await templats.findOne({ Email: token });
                console.log("duduudududu")
