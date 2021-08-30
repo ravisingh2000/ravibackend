@@ -3,9 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
 const students = require("../models/student");
+const templats=require("..//models/template")
 router.get("/getdata", async (req, res) => {
         try {
-                const token = req.cookies.mainproject;
+                const token = req.cookies.mainproject1;
                 const verify = await jwt.verify(token, "ravisingh");
                 const data = await students.findOne({ email: verify.email });
                 res.json({
@@ -19,7 +20,34 @@ router.get("/getdata", async (req, res) => {
                 })
         }
 })
+router.get("/gettemplatedata", async (req, res) => {
+        try {
+                const token = req.cookies.mainproject1;
+                console.log(token)
+                if(k!=undefined){
+                //  const verify = await jwt.verify(token, "ravisingh");
+                const data = await templats.findOne({ Email: token });
+               console.log("duduudududu")
+               console.log(data)
+                res.json({
+                        name: true,
+                        data: data
+                })
+        }
+                else{
+                        res.json({
+                                name: false
+                        })
+                }
+        }
+        catch (e) {
+                res.json({
+                        name: false
+                })
+        }
+})
 router.post("/register", async (req, res, next) => {
+        console.log(req.body) 
         if (req.body.data.password == req.body.data.cnpassword) {
                 try {
                         const submit = new students({
@@ -46,9 +74,50 @@ router.post("/register", async (req, res, next) => {
 
         }
 })
+router.post("/template", async (req, res, next) => {
+        console.log(req.body) 
+        console.log("hhhhhhhh")
+        res.cookie("mainproject1", req.body.data.Email,
+        { maxAge: 31536000000 }
+);
+        console.log(req.body.data.Education[0].Educationname)
+        console.log("hhhhhhhhh")
+        // if (req.body.data.password == req.body.data.cnpassword) {
+                try { console.log(req.body.data.Name)
+                        const submit = new templats({
+                                "Name": req.body.data.Name,
+                                "Email": req.body.data.Email,
+                                "Phone":req.body.data.Phone,
+                                "Position":req.body.data.Position,
+                                "Address":req.body.data.Address,
+                                "Objective":req.body.data.Objective,
+                                "skills":req.body.data.skills,
+                                "Education":req.body.data.Education,
+                                "Experience":req.body.data.Experience,
+                                "Project":req.body.data.Project,
+                                "Certificate":req.body.data.Certificate,
+                                "Social":req.body.data.Social
+                        })
+                        const data =await submit.save();
+                        console.log(data)
+                        
+                        res.json({
+                               data:data 
+                        })
+                }
+                catch (e) {
+                        res.status(404).send("IncorectPassword!")
 
+                }
+        }
+)
+// router.get("/template", async (req, res, next) => {
+        
+// })
 router.post("/home", async (req, res) => {
         try {
+                console.log("gggggggggggg")  
+                
                 const data = await students.findOne({ email: req.body.data.email });
                 const bcryptpassword = await bcrypt.compare(req.body.data.password, data.Password);
                 if (bcryptpassword == true) {

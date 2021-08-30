@@ -25,6 +25,7 @@ app.use(express.static(__dirname+'/meanstack'));
 
 app.get("/api/signout", async (req, res) => {
         res.clearCookie("mainproject");
+        res.clearCookie("mainproject1")
         res.json({
                 name: false
         })
