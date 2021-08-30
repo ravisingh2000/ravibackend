@@ -195,7 +195,7 @@ router.post("/update", async (req, res, next) => {
                         useFindAndModify: false
                 })
                 res.json({
-                        bcrypt: true,
+                        bcrypt:true,
                         data: data
                 })
         }
