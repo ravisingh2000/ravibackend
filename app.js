@@ -1,42 +1,43 @@
 require('dotenv').config()
 const express = require("express");
 const cors = require('cors')
-const path=require('path')
+const path = require('path')
 var compression = require("compression");
 const cookieParser = require("cookie-parser")
 require("./services/dbConect")
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
-const students = require("./models/student");
-const router=require("./routes/userApi")
-const validrouter=require("./routes/auth")
-
-
-app.use("/api",router)
-app.use("/api",validrouter)
-// var corsOption={
-        //         origin:"http://localhost:4200"
-        // }
-        app.use(compression());
-        // app.use(cors(corsOption))
+app.use(compression());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(__dirname+'/meanstack'));
+const students = require("./models/student");
+const userRouter = require("./routes/userApi")
+const validrouter = require("./routes/auth")
+const resumeRouter = require("./routes/resume")
+app.use("/api", userRouter)
+app.use("/api", validrouter)
+app.use("/api", resumeRouter)
+// var corsOption={
+//         origin:"http://localhost:4200"
+// }
+// app.use(cors(corsOption))
 
+app.use(express.static(__dirname + '/meanstack'));
 app.get("/api/signout", async (req, res) => {
         res.clearCookie("mainproject");
         res.clearCookie("mainproject1")
-        res.json({
-                name: false
+        res.status(200).json({
+                valid: false
         })
-        
+
 })
 
-app.get('*', function(req,res) {
-console.log(__dirname+"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
-res.sendFile(path.join(__dirname+'/meanstack/index.html'));
+app.get('*', function (req, res) {
+
+        res.sendFile(path.join(__dirname + '/meanstack/index.html'));
+
 });
-app.listen(process.env.PORT||3000, () => {
+app.listen(process.env.PORT || 3000, () => {
         console.log("Server start at: " + "http://localhost:" + 3000 + "/")
 
 })

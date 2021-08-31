@@ -3,52 +3,27 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
 const students = require("../models/student");
-const templats=require("..//models/template")
+
+
 router.get("/getdata", async (req, res) => {
         try {
                 const token = req.cookies.mainproject;
-                const verify = await jwt.verify(token, "ravisingh");
+                const verify = await jwt.verify(token,process.env.SECRET_KEY );
                 const data = await students.findOne({ email: verify.email });
-                res.json({
-                        name: true,
+                res.status(200).json({
+                        valid: true,
                         data: data
                 })
         }
         catch (e) {
-                res.json({
-                        name: false
+                res.status(200).json({
+                        valid: false
                 })
         }
 })
-router.get("/gettemplatedata", async (req, res) => {
-        try {
-                const token = req.cookies.mainproject1;
-                console.log(token)
-                console.log("hhhhhhhhhhhhhhhhhhhhhhhh")
-                if(token!=undefined){
-                //  const verify = await jwt.verify(token, "ravisingh");
-                const data = await templats.findOne({ Email: token });
-               console.log("duduudududu")
-               console.log(data)
-                res.json({
-                        name: true,
-                        data: data
-                })
-        }
-                else{
-                        res.json({
-                                name: false
-                        })
-                }
-        }
-        catch (e) {
-                res.json({
-                        name: false
-                })
-        }
-})
+
 router.post("/register", async (req, res, next) => {
-        console.log(req.body) 
+        // console.log(req.body) 
         if (req.body.data.password == req.body.data.cnpassword) {
                 try {
                         const submit = new students({
@@ -58,64 +33,25 @@ router.post("/register", async (req, res, next) => {
                                 "Password": req.body.data.password
                         })
                         submit.save();
-                        res.json({
-                                nmae: true
+                        res.status(200).json({
+                                valid: true
                         })
                 }
                 catch (e) {
-                        res.status(404).send("IncorectPassword!")
+                        res.status(401).send("IncorectPassword!")
 
                 }
         }
         else {
 
-                res.json({
-                        nmae: false
+                res.status(401).json({
+                        valid: false
                 })
 
         }
 })
-router.post("/template", async (req, res, next) => {
-        console.log(req.body) 
-        console.log("hhhhhhhh")
-        res.cookie("mainproject1", req.body.data.Email,
-        { maxAge: 31536000000 }
-);
-        console.log(req.body.data.Education[0].Educationname)
-        console.log("hhhhhhhhh")
-        // if (req.body.data.password == req.body.data.cnpassword) {
-                try { console.log(req.body.data.Name)
-                        const submit = new templats({
-                                "Name": req.body.data.Name,
-                                "Email": req.body.data.Email,
-                                "Phone":req.body.data.Phone,
-                                "Position":req.body.data.Position,
-                                "Address":req.body.data.Address,
-                                "Objective":req.body.data.Objective,
-                                "skills":req.body.data.skills,
-                                "Education":req.body.data.Education,
-                                "Experience":req.body.data.Experience,
-                                "Project":req.body.data.Project,
-                                "Certificate":req.body.data.Certificate,
-                                "Social":req.body.data.Social
-                        })
-                        const data =await submit.save();
-                        console.log(data)
-                        
-                        res.json({
-                               data:data 
-                        })
-                }
-                catch (e) {
-                        res.status(404).send("IncorectPassword!")
 
-                }
-        }
-)
-// router.get("/template", async (req, res, next) => {
-        
-// })
-router.post("/home", async (req, res) => {
+router.post("/profile", async (req, res) => {
         try {
                 console.log("gggggggggggg")  
                 
@@ -126,22 +62,22 @@ router.post("/home", async (req, res) => {
                         res.cookie("mainproject", token,
                                 { maxAge: 31536000000 }
                         );
-                        res.json({
-                                bcrypt: true,
+                        res.status(200).json({
+                                bcryptValid: true,
                                 data: data
                         })
                 }
                 else {
-                        res.json(
+                        res.status(401).json(
                                 {
-                                        bcrypt: false
+                                        bcryptValid: false
                                 })
                 }
         }
         catch (error) {
                 res.json(
                         {
-                                bcrypt: false
+                                bcryptValid: false
                         })
 
         }
@@ -162,14 +98,14 @@ router.post("/update", async (req, res, next) => {
                                                 "College": req.body.data.college
                                         }
                                 })
-                                res.json({
-                                        bcrypt: true,
+                                res.status(200).json({
+                                        bcryptValid: true,
                                         data: data
                                 })
                         }
                         else if (bcryptpassword == false) {
-                                res.json({
-                                        bcrypt: false
+                                res.status(401).json({
+                                        bcryptValid: false
                                 })
                         }
 
@@ -177,7 +113,7 @@ router.post("/update", async (req, res, next) => {
 
                 catch (error) {
                         res.json({
-                                bcrypt: false
+                                bcryptValid: false
                         })
 
                 }
@@ -195,14 +131,14 @@ router.post("/update", async (req, res, next) => {
                         new: true,
                         useFindAndModify: false
                 })
-                res.json({
-                        bcrypt:true,
+                res.status(200).json({
+                        bcryptValid:true,
                         data: data
                 })
         }
         else {
                 res.json({
-                        bcrypt: false
+                        bcryptValid: false
                 })
         }
 
